@@ -1,0 +1,72 @@
+blueprint:
+  name: Charging Reminder
+  description: Sends a reminder notification to charge your car if it's not plugged in and at home with the battery below a specified threshold.
+  domain: automation
+  input:
+    charger_connection:
+      name: Charger Connection Sensor
+      description: The binary sensor that indicates if the car is connected to the charger
+      selector:
+        entity:
+          domain: binary_sensor
+    car_location:
+      name: Car Location Tracker
+      description: The device tracker that indicates the car's location
+      selector:
+        entity:
+          domain: device_tracker
+    battery_state_of_charge:
+      name: Battery State of Charge Sensor
+      description: The sensor that indicates the car's battery state of charge
+      selector:
+        entity:
+          domain: sensor
+    charge_threshold:
+      name: Charge Threshold
+      description: The battery state of charge threshold below which the reminder should be sent
+      default: 85
+      selector:
+        number:
+          min: 0
+          max: 100
+          unit_of_measurement: "%"
+          mode: slider
+          step: 1
+    notification_device:
+      name: Notification Device
+      description: The mobile device to send the notification to
+      selector:
+        device:
+          integration: mobile_app
+    notification_time:
+      name: Notification Time
+      description: The time to send the charging reminder
+      default: "20:30:00"
+      selector:
+        time: {}
+
+trigger:
+  - platform: time
+    at: !input notification_time
+
+condition:
+  - condition: and
+    conditions:
+      - condition: state
+        entity_id: !input charger_connection
+        state: "off"
+      - condition: state
+        entity_id: !input car_location
+        state: home
+      - condition: numeric_state
+        entity_id: !input battery_state_of_charge
+        below: !input charge_threshold
+
+action:
+  - service: notify.notify
+    target:
+      device_id: !input notification_device
+    data:
+      title: Time to charge!
+      message: It's time to charge your car, but it's not plugged in!
+mode: single
