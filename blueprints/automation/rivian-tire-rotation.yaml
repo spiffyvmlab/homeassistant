@@ -62,17 +62,17 @@ action:
       - conditions:
           - condition: template
             value_template: >
-              {{ (states(!input odometer_input) | float) -
-              (states(!input last_tire_rotation_input) | float) >= !input mileage_interval }}
+              {{ (states(odometer_input) | float) -
+              (states(last_tire_rotation_input) | float) >= mileage_interval }}
         sequence:
           - service: notify.notify
             data:
               target: !input mobile_device_notify
               message: >-
-                It's time to rotate your tires again. {{ !input mileage_interval }} miles reached since
+                It's time to rotate your tires again. {{ mileage_interval }} miles reached since
                 last rotation.
           - condition: template
-            value_template: "{{ is_state(!input service_mode_input, 'off') }}"
+            value_template: "{{ is_state(service_mode_input, 'off') }}"
           - service: notify.notify
             data:
               target: !input mobile_device_notify
@@ -80,13 +80,13 @@ action:
       - conditions:
           - condition: template
             value_template: >
-              {{ (states(!input odometer_input) | float) -
-              (states(!input last_tire_rotation_input) | float) % !input followup_interval == 0
+              {{ (states(odometer_input) | float) -
+              (states(last_tire_rotation_input) | float) % followup_interval == 0
               and 
-                  (states(!input odometer_input) | float) - (states(!input last_tire_rotation_input) | float) >= !input mileage_interval }}
+                  (states(odometer_input) | float) - (states(last_tire_rotation_input) | float) >= mileage_interval }}
         sequence:
           - condition: template
-            value_template: "{{ is_state(!input service_mode_input, 'off') }}"
+            value_template: "{{ is_state(service_mode_input, 'off') }}"
           - service: notify.notify
             data:
               target: !input mobile_device_notify
@@ -101,7 +101,7 @@ action:
             state: "on"
         sequence:
           - delay: "00:05:00"
-          - wait_template: "{{ is_state(!input service_mode_input, 'off') }}"
+          - wait_template: "{{ is_state(service_mode_input, 'off') }}"
           - service: notify.notify
             data:
               target: !input mobile_device_notify
@@ -109,5 +109,5 @@ action:
           - service: input_number.set_value
             data:
               entity_id: !input last_tire_rotation_input
-              value: "{{ states(!input odometer_input) | float }}"
+              value: "{{ states(odometer_input) | float }}"
 mode: single
