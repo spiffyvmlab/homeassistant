@@ -272,3 +272,5 @@ views:
     icon: mdi:truck-off-road
     background:
       image: /api/image/serve/01b190d0f332eec77c41dae5109f5b45/original
+
+## Thanks to https://github.com/ervwalter for tweaking this dashboard for the R1S!       
