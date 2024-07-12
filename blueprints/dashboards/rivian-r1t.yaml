@@ -147,15 +147,15 @@ blueprint:
       name: Background Image
       description: URL or path to the background image to use for the dashboard
       selector:
-        text: {}      
+        text: {}
 
 views:
   - title: R1T
-    cards: []
     type: sections
     max_columns: 3
     sections:
       - type: grid
+        title: General
         cards:
           - type: gauge
             entity: !input odometer
@@ -185,14 +185,14 @@ views:
                   top: 35%
                   left: 50%
             image_entity: !input image_front_dark
-          - graph: line
-            type: sensor
+          - type: sensor
             entity: !input cabin_temperature
+            graph: line
             detail: 2
             name: Cabin Temp
-          - graph: line
-            type: sensor
+          - type: sensor
             entity: !input altitude
+            graph: line
             detail: 2
             name: Altitude
             hours_to_show: 24
@@ -205,8 +205,8 @@ views:
             name: 12v Battery
             hide_state: false
             show_entity_picture: false
-        title: General
       - type: grid
+        title: Status
         cards:
           - type: picture-elements
             elements:
@@ -321,7 +321,7 @@ views:
                 style:
                   top: 73%
                   left: 92%
-                            - type: state-label
+              - type: state-label
                 entity: !input tire_pressure_sensors[10]
                 style:
                   top: 75%
@@ -332,8 +332,8 @@ views:
                   top: 77%
                   left: 92%
             image_entity: !input image_overhead_dark
-        title: Status
       - type: grid
+        title: Charging
         cards:
           - type: gauge
             entity: !input battery_state_of_charge
@@ -341,9 +341,9 @@ views:
               grid_columns: 2
               grid_rows: 2
             name: State of Charge
-          - graph: line
-            type: sensor
+          - type: sensor
             entity: !input estimated_vehicle_range
+            graph: line
             detail: 2
             hours_to_show: 12
             name: Estimated Range
@@ -407,18 +407,18 @@ views:
               - condition: state
                 entity: !input charging_status
                 state: 'on'
-          - graph: line
-            type: sensor
-            detail: 2
+          - type: sensor
             entity: !input charging_rate
+            graph: line
+            detail: 2
             name: Charge Rate
             visibility:
               - condition: state
                 entity: !input charging_status
                 state: 'on'
-          - graph: line
-            type: sensor
+          - type: sensor
             entity: !input charging_speed
+            graph: line
             detail: 2
             name: Charge Speed
             visibility:
@@ -439,7 +439,6 @@ views:
               - condition: state
                 entity: !input charging_status
                 state: 'on'
-        title: Charging
     icon: mdi:truck-off-road
     background:
       image: !input background_image
