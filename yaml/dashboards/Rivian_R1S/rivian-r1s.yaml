@@ -1,0 +1,274 @@
+views:
+ - title: Rivian R1S
+  cards: []
+  type: sections
+  max_columns: 3
+  sections:
+    - type: grid
+      cards:
+        - type: gauge
+          entity: sensor.r1s_odometer
+          max: 30100
+          layout_options:
+            grid_columns: 2
+            grid_rows: 2
+          name: Odometer
+        - type: tile
+          entity: update.r1s_software
+          name: Software
+          vertical: true
+          show_entity_picture: true
+          state_content:
+            - state
+            - installed_version
+          layout_options:
+            grid_columns: 2
+            grid_rows: 2
+        - type: custom:gap-card
+        - type: picture-elements
+          elements:
+            - type: state-label
+              prefix: 'Cabin Temp: '
+              entity: sensor.r1s_cabin_temperature
+              style:
+                top: 35%
+                left: 50%
+          image_entity: image.r1s_front_dark
+        - graph: line
+          type: sensor
+          entity: sensor.r1s_cabin_temperature
+          detail: 2
+          name: Cabin Temp
+        - graph: line
+          type: sensor
+          entity: sensor.r1s_altitude
+          detail: 2
+          name: Altitude
+          hours_to_show: 24
+        - type: tile
+          entity: binary_sensor.r1s_wiper_fluid_level
+          name: Wiper Fluid
+          show_entity_picture: false
+        - type: tile
+          entity: sensor.r1s_12v_battery_health
+          name: 12v Battery
+          hide_state: false
+          show_entity_picture: false
+      title: General
+    - type: grid
+      cards:
+        - type: picture-elements
+          elements:
+            - type: state-badge
+              entity: sensor.r1s_power_state
+              title: Power State
+              style:
+                top: 55%
+                left: 51%
+            - type: state-icon
+              entity: binary_sensor.r1s_front_trunk_lock
+              style:
+                top: 1.3%
+                left: 50.8%
+            - type: state-icon
+              entity: binary_sensor.r1s_charge_port
+              style:
+                top: 8%
+                left: 9%
+            - type: state-icon
+              entity: binary_sensor.r1s_door_front_left_lock
+              style:
+                top: 41%
+                left: 9%
+            - type: state-icon
+              entity: binary_sensor.r1s_door_front_right_lock
+              style:
+                top: 41%
+                left: 92%
+            - type: state-icon
+              entity: binary_sensor.r1s_door_rear_left_lock
+              style:
+                top: 57%
+                left: 9%
+            - type: state-icon
+              entity: binary_sensor.r1s_door_rear_right_lock
+              style:
+                top: 57%
+                left: 92%
+            - type: state-icon
+              entity: binary_sensor.r1s_tailgate_lock
+              style:
+                top: 93%
+                left: 51%
+            - type: state-icon
+              entity: sensor.r1s_tire_pressure_front_left
+              style:
+                top: 16%
+                left: 6%
+            - type: state-label
+              entity: sensor.r1s_tire_pressure_front_left
+              style:
+                top: 18%
+                left: 6%
+            - type: state-label
+              entity: sensor.r1s_tire_pressure_front_left_status
+              style:
+                top: 19.5%
+                left: 6%
+            - type: state-icon
+              entity: sensor.r1s_tire_pressure_front_right
+              style:
+                top: 16%
+                left: 95%
+            - type: state-label
+              entity: sensor.r1s_tire_pressure_front_right
+              style:
+                top: 18%
+                left: 95%
+            - type: state-label
+              entity: sensor.r1s_tire_pressure_front_right_status
+              style:
+                top: 19.5%
+                left: 95%
+            - type: state-icon
+              entity: sensor.r1s_tire_pressure_rear_left
+              style:
+                top: 75%
+                left: 6%
+            - type: state-label
+              entity: sensor.r1s_tire_pressure_rear_left
+              style:
+                top: 77%
+                left: 6%
+            - type: state-label
+              entity: sensor.r1s_tire_pressure_rear_left_status
+              style:
+                top: 78.5%
+                left: 6%
+            - type: state-icon
+              entity: sensor.r1s_tire_pressure_rear_right
+              style:
+                top: 75%
+                left: 95%
+            - type: state-label
+              entity: sensor.r1s_tire_pressure_rear_right
+              style:
+                top: 77%
+                left: 95%
+            - type: state-label
+              entity: sensor.r1s_tire_pressure_rear_right_status
+              style:
+                top: 78.5%
+                left: 95%
+          image_entity: image.r1s_overhead_dark
+        title: Status
+      - type: grid
+        cards:
+          - type: gauge
+            entity: sensor.r1s_battery_state_of_charge
+            layout_options:
+              grid_columns: 2
+              grid_rows: 2
+            name: State of Charge
+          - graph: line
+            type: sensor
+            entity: sensor.r1s_estimated_vehicle_range
+            detail: 2
+            hours_to_show: 12
+            name: Estimated Range
+          - type: custom:gap-card
+          - type: picture-elements
+            elements:
+              - type: state-label
+                prefix: 'Status: '
+                entity: binary_sensor.r1s_charging_status
+                style:
+                  top: 5%
+                  left: 75px
+              - type: state-icon
+                entity: binary_sensor.r1s_charge_port
+                style:
+                  top: 39.6%
+                  left: 35.4%
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.r1s_charging_status
+                    state: Charging
+                elements:
+                  - type: state-label
+                    prefix: 'Charging Rate: '
+                    entity: sensor.r1s_charging_rate
+                    style:
+                      top: 10%
+                      left: 90px
+                  - type': state-label
+                    prefix: 'Charging Port: '
+                    entity: binary_sensor.r1s_charge_port
+                    style:
+                      top: 10%
+                      left: 90px
+                  - type: state-label
+                    prefix: 'Charging Speed: '
+                    entity: sensor.r1s_charging_speed
+                    style:
+                      top: 15%
+                      left: 96px
+                  - type: state-label
+                    prefix: 'Energy Delivered: '
+                    entity: sensor.r1s_charging_energy_delivered
+                    style:
+                      top: 20%
+                      left: 108px
+                  - type: state-label
+                    prefix: 'Time Remaining: '
+                    entity: sensor.r1s_charging_time_remaining
+                    style:
+                      top: 25%
+                      left: 100px
+            image_entity: image.r1s_side_charging_dark
+          - type: tile
+            entity: sensor.r1s_battery_state_of_charge_limit
+            name: Charge Limit
+          - type: tile
+            entity: sensor.r1s_charging_range_added
+            name: Range Added
+            visibility:
+              - condition: state
+                entity: binary_sensor.r1s_charging_status
+                state: 'on'
+          - graph: line
+            type: sensor
+            detail: 2
+            entity: sensor.r1s_charging_rate
+            name: Charge Rate
+            visibility:
+              - condition: state
+                entity: binary_sensor.r1s_charging_status
+                state: 'on'
+          - graph: line
+            type: sensor
+            entity: sensor.r1s_charging_speed
+            detail: 2
+            name: Charge Speed
+            visibility:
+              - condition: state
+                entity: binary_sensor.r1s_charging_status
+                state: 'on'
+          - type: tile
+            entity: sensor.r1s_charging_start_time
+            visibility:
+              - condition: state
+                entity: binary_sensor.r1s_charging_status
+                state: 'on'
+            name: Charge Start Time
+          - type: tile
+            entity: sensor.r1s_charging_cost
+            name: Charging Cost
+            visibility:
+              - condition: state
+                entity: binary_sensor.r1s_charging_status
+                state: 'on'
+        title: Charging
+    icon: mdi:truck-off-road
+    background:
+      image: /api/image/serve/01b190d0f332eec77c41dae5109f5b45/original
