@@ -1,0 +1,114 @@
+# Package for tracking EV vampire drain
+
+# Input Numbers
+input_number:
+  ev_initial_range:
+    name: EV Initial Range
+    min: 0
+    max: 1000
+    step: 0.1
+
+  ev_initial_state_of_charge:
+    name: EV Initial State of Charge
+    min: 0
+    max: 100
+    step: 0.1
+
+  ev_last_charge_state_of_charge:
+    name: Last Charge State of Charge
+    min: 0
+    max: 100
+    step: 0.1
+
+  ev_vampire_drain_kwh_lost:
+    name: Vampire Drain kWh Lost
+    min: 0
+    max: 100
+    step: 0.1
+
+# Template Sensors
+sensor:
+  - platform: template
+    sensors:
+      ev_vampire_drain_kwh_lost:
+        friendly_name: "EV Vampire Drain kWh Lost"
+        unit_of_measurement: "kWh"
+        value_template: >
+          {% set initial_soc = states('input_number.ev_initial_state_of_charge') | float(default=0) %}
+          {% set current_soc = states('sensor.r1t_battery_state_of_charge') | float(default=0) %}
+          {% set capacity = states('sensor.r1t_battery_capacity') | float(default=0) %}
+          {{ ((initial_soc - current_soc) / 100) * capacity if initial_soc > current_soc else 0 }}
+
+      ev_vampire_drain_since_last_charge:
+        friendly_name: "EV Vampire Drain Since Last Charge"
+        unit_of_measurement: "kWh"
+        value_template: >
+          {{ states('input_number.ev_vampire_drain_kwh_lost') | float(default=0) }}
+          
+      ev_vampire_drain_percentage:
+        friendly_name: "EV Vampire Drain Percentage"
+        unit_of_measurement: "%"
+        value_template: >
+          {% set last_charge_soc = states('input_number.ev_last_charge_state_of_charge') | float(default=0) %}
+          {% set current_soc = states('sensor.r1t_battery_state_of_charge') | float(default=0) %}
+          {% if last_charge_soc > current_soc %}
+            {{ ((last_charge_soc - current_soc) / last_charge_soc) * 100 | round(2) }}
+          {% else %}
+            0
+          {% endif %}
+
+# Automations
+automation:
+  - id: '1694012345678'
+    alias: Capture Last Charge State of Charge
+    description: Capture the state of charge when the vehicle finishes charging
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.r1t_charging_status
+        from: 'on'
+        to: 'off'
+    action:
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.ev_last_charge_state_of_charge
+        data:
+          value: '{{ states(''sensor.r1t_battery_state_of_charge'') | float(default=0) }}'
+    mode: single
+
+  - id: '1694012345679'
+    alias: Capture Initial State of Charge
+    description: Capture the initial state of charge when the vehicle shifts to Park
+    trigger:
+      - platform: state
+        entity_id: sensor.r1t_gear_selector
+        to: 'Park'
+    action:
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.ev_initial_state_of_charge
+        data:
+          value: '{{ states(''sensor.r1t_battery_state_of_charge'') | float(default=0) }}'
+    mode: single
+
+  - id: '1694012345680'
+    alias: Calculate Vampire Drain
+    description: Calculate vampire drain since the last charge
+    trigger:
+      - platform: state
+        entity_id: sensor.r1t_gear_selector
+        from: 'Park'
+        to: ['Drive', 'Reverse']
+    action:
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.ev_vampire_drain_kwh_lost
+        data:
+          value: >
+            {% set last_charge_soc = states('input_number.ev_last_charge_state_of_charge') | float(default=0) %}
+            {% set current_soc = states('sensor.r1t_battery_state_of_charge') | float(default=0) %}
+            {% set initial_soc = states('input_number.ev_initial_state_of_charge') | float(default=0) %}
+            {% set capacity = states('sensor.r1t_battery_capacity') | float(default=0) %}
+            {% set usage_drain = initial_soc - current_soc %}
+            {% set vampire_drain = last_charge_soc - current_soc - usage_drain %}
+            {{ vampire_drain * capacity / 100 }}
+    mode: single
