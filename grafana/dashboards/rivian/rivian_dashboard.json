@@ -1,0 +1,2435 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 2,
+    "id": 7,
+    "links": [],
+    "panels": [
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 18,
+        "panels": [],
+        "title": "General",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 14,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": 86400000,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": true,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "dashed"
+              }
+            },
+            "fieldMinMax": false,
+            "mappings": [],
+            "max": 40000,
+            "noValue": "No Change",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 30000
+                }
+              ]
+            },
+            "unit": "lengthmi"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 4,
+          "x": 0,
+          "y": 1
+        },
+        "id": 5,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": false
+          },
+          "tooltip": {
+            "maxHeight": 600,
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.3.1",
+        "targets": [
+          {
+            "alias": "Odometer",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "measurement": "mi",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT max(\"value\") FROM \"mi\" WHERE (\"entity_id\" = 'r1t_odometer') AND $timeFilter GROUP BY time($__interval) fill(previous)",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "entity_id::tag",
+                "operator": "=",
+                "value": "r1t_odometer"
+              }
+            ]
+          }
+        ],
+        "title": "Mileage",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "max": 30000,
+            "thresholds": {
+              "mode": "percentage",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "orange",
+                  "value": 50
+                },
+                {
+                  "color": "dark-orange",
+                  "value": 75
+                },
+                {
+                  "color": "light-red",
+                  "value": 95
+                },
+                {
+                  "color": "dark-red",
+                  "value": 100
+                }
+              ]
+            },
+            "unit": "lengthmi"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 4,
+          "x": 4,
+          "y": 1
+        },
+        "id": 7,
+        "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto",
+          "text": {}
+        },
+        "pluginVersion": "11.3.1",
+        "targets": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+            },
+            "query": "SELECT mean(\"value\") FROM \"mi\" WHERE (\"entity_id\"::tag = 'r1t_odometer') AND $timeFilter GROUP BY time($__interval) fill(null)\n",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series"
+          }
+        ],
+        "title": "Odometer",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+        },
+        "description": "Divides current odometer reading by the number of days since June 27th, 2024 (epoch 1719446400000)\n\nColor thresholds:\n\n\t•\tGreen (On Track): <= 27.4\n\t•\tYellow (Caution): 27.5 - 30.0\n\t•\tRed (Over Limit): > 30.0",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 27.5
+                },
+                {
+                  "color": "dark-red",
+                  "value": 30
+                }
+              ]
+            },
+            "unit": "lengthmi"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 4,
+          "x": 8,
+          "y": 1
+        },
+        "id": 10,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "/^Average Miles Per Day$/",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "11.3.1",
+        "targets": [
+          {
+            "hide": false,
+            "query": "SELECT last(\"value\") \nFROM \"mi\" \nWHERE (\"entity_id\" = 'r1t_odometer') AND $timeFilter",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series"
+          }
+        ],
+        "title": "Average Miles Per Day Since Delivery",
+        "transformations": [
+          {
+            "id": "calculateField",
+            "options": {
+              "alias": "Milliseconds Since Start Date",
+              "binary": {
+                "left": {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "Time"
+                  }
+                },
+                "operator": "-",
+                "right": {
+                  "fixed": "1719446400000"
+                }
+              },
+              "mode": "binary",
+              "reduce": {
+                "reducer": "sum"
+              }
+            }
+          },
+          {
+            "id": "calculateField",
+            "options": {
+              "alias": "Days Since Start Date",
+              "binary": {
+                "left": {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "Milliseconds Since Start Date"
+                  }
+                },
+                "operator": "/",
+                "right": {
+                  "fixed": "86400000"
+                }
+              },
+              "mode": "binary",
+              "reduce": {
+                "reducer": "sum"
+              }
+            }
+          },
+          {
+            "id": "calculateField",
+            "options": {
+              "alias": "Average Miles Per Day",
+              "binary": {
+                "left": {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "mi.last"
+                  }
+                },
+                "operator": "/",
+                "right": {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "Days Since Start Date"
+                  }
+                }
+              },
+              "mode": "binary",
+              "reduce": {
+                "reducer": "sum"
+              }
+            }
+          }
+        ],
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "max": 352,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "dark-red",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 50
+                },
+                {
+                  "color": "orange",
+                  "value": 100
+                },
+                {
+                  "color": "blue",
+                  "value": 150
+                },
+                {
+                  "color": "dark-green",
+                  "value": 200
+                }
+              ]
+            },
+            "unit": "lengthmi"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 4,
+          "x": 12,
+          "y": 1
+        },
+        "id": 4,
+        "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto"
+        },
+        "pluginVersion": "11.3.1",
+        "targets": [
+          {
+            "alias": "Est Range",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "previous"
+                ],
+                "type": "fill"
+              }
+            ],
+            "measurement": "mi",
+            "orderByTime": "ASC",
+            "policy": "autogen",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "entity_id::tag",
+                "operator": "=",
+                "value": "r1t_estimated_vehicle_range"
+              }
+            ]
+          }
+        ],
+        "title": "Estimated Range (Current)",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "percentage",
+              "steps": [
+                {
+                  "color": "dark-red",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 10
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 25
+                },
+                {
+                  "color": "#6ED0E0",
+                  "value": 50
+                },
+                {
+                  "color": "green",
+                  "value": 75
+                },
+                {
+                  "color": "dark-green",
+                  "value": 85
+                },
+                {
+                  "color": "purple",
+                  "value": 86
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 4,
+          "x": 16,
+          "y": 1
+        },
+        "id": 12,
+        "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto"
+        },
+        "pluginVersion": "11.3.1",
+        "targets": [
+          {
+            "alias": "State of Charge",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "previous"
+                ],
+                "type": "fill"
+              }
+            ],
+            "measurement": "%",
+            "orderByTime": "ASC",
+            "policy": "autogen",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "entity_id::tag",
+                "operator": "=",
+                "value": "r1t_battery_state_of_charge"
+              }
+            ]
+          }
+        ],
+        "title": "State of Charge (Current)",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": true,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "max": 352,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "lengthmi"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 10,
+          "x": 0,
+          "y": 6
+        },
+        "id": 13,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": false
+          },
+          "tooltip": {
+            "maxHeight": 600,
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.3.1",
+        "targets": [
+          {
+            "alias": "Est Range",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "previous"
+                ],
+                "type": "fill"
+              }
+            ],
+            "measurement": "mi",
+            "orderByTime": "ASC",
+            "policy": "autogen",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "entity_id::tag",
+                "operator": "=",
+                "value": "r1t_estimated_vehicle_range"
+              }
+            ]
+          }
+        ],
+        "title": "Estimated Range",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": true,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "percentage",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 10,
+          "x": 10,
+          "y": 6
+        },
+        "id": 1,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": false
+          },
+          "tooltip": {
+            "maxHeight": 600,
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.3.1",
+        "targets": [
+          {
+            "alias": "State of Charge",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "previous"
+                ],
+                "type": "fill"
+              }
+            ],
+            "measurement": "%",
+            "orderByTime": "ASC",
+            "policy": "autogen",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "entity_id::tag",
+                "operator": "=",
+                "value": "r1t_battery_state_of_charge"
+              }
+            ]
+          }
+        ],
+        "title": "State of Charge",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "Altitude",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 7,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineStyle": {
+                "fill": "solid"
+              },
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": true,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "fieldMinMax": false,
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "lengthft"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byFrameRefID",
+                "options": "B"
+              },
+              "properties": [
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "right"
+                },
+                {
+                  "id": "custom.fillOpacity",
+                  "value": 0
+                },
+                {
+                  "id": "custom.axisLabel",
+                  "value": "Range"
+                },
+                {
+                  "id": "unit",
+                  "value": "lengthmi"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byFrameRefID",
+                "options": "C"
+              },
+              "properties": [
+                {
+                  "id": "custom.fillOpacity",
+                  "value": 10
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 0,
+          "y": 14
+        },
+        "id": 2,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "maxHeight": 600,
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.3.1",
+        "targets": [
+          {
+            "alias": "Altitude",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "measurement": "ft",
+            "orderByTime": "ASC",
+            "policy": "autogen",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "entity_id::tag",
+                "operator": "=",
+                "value": "r1t_altitude"
+              }
+            ]
+          },
+          {
+            "alias": "Est Range",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": false,
+            "measurement": "mi",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT mean(\"value\") FROM \"autogen\".\"%\" WHERE (\"entity_id\"::tag = 'r1t_estimated_vehicle_range') AND $timeFilter GROUP BY time($__interval) fill(null)\n",
+            "rawQuery": false,
+            "refId": "B",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "entity_id::tag",
+                "operator": "=",
+                "value": "r1t_estimated_vehicle_range"
+              }
+            ]
+          },
+          {
+            "alias": "Odometer",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": false,
+            "measurement": "mi",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "refId": "C",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "entity_id::tag",
+                "operator": "=",
+                "value": "r1t_odometer"
+              }
+            ]
+          }
+        ],
+        "title": "Altitude vs Est Range",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "lengthft"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 4,
+          "x": 8,
+          "y": 14
+        },
+        "id": 15,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "11.3.1",
+        "targets": [
+          {
+            "alias": "Altitude (ft)",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "measurement": "ft",
+            "orderByTime": "ASC",
+            "policy": "autogen",
+            "query": "SELECT min(\"value\") FROM \"autogen\".\"ft\" WHERE (\"entity_id\"::tag = 'r1t_altitude')",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "entity_id::tag",
+                "operator": "=",
+                "value": "r1t_altitude"
+              }
+            ]
+          }
+        ],
+        "title": "Min Altitude",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": true,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "fieldMinMax": false,
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "lengthft"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 12,
+          "y": 14
+        },
+        "id": 3,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": false
+          },
+          "tooltip": {
+            "maxHeight": 600,
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.3.1",
+        "targets": [
+          {
+            "alias": "Altitude (ft)",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "measurement": "ft",
+            "orderByTime": "ASC",
+            "policy": "autogen",
+            "query": "SELECT max(\"value\") FROM \"autogen\".\"ft\" WHERE (\"entity_id\"::tag = 'r1t_altitude') AND $timeFilter GROUP BY time($__interval) fill(previous)",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "entity_id::tag",
+                "operator": "=",
+                "value": "r1t_altitude"
+              }
+            ]
+          },
+          {
+            "alias": "Min Altitude",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+            },
+            "hide": true,
+            "query": "SELECT min(\"value\") FROM \"autogen\".\"ft\" WHERE (\"entity_id\"::tag = 'r1t_altitude')",
+            "rawQuery": true,
+            "refId": "B",
+            "resultFormat": "time_series"
+          },
+          {
+            "alias": "Max Altitude",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+            },
+            "hide": true,
+            "query": "SELECT max(\"value\") FROM \"autogen\".\"ft\" WHERE (\"entity_id\"::tag = 'r1t_altitude')",
+            "rawQuery": true,
+            "refId": "C",
+            "resultFormat": "time_series"
+          }
+        ],
+        "title": "Altitude",
+        "transformations": [
+          {
+            "id": "merge",
+            "options": {}
+          }
+        ],
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "lengthft"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 4,
+          "x": 8,
+          "y": 18
+        },
+        "id": 14,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "11.3.1",
+        "targets": [
+          {
+            "alias": "Altitude (ft)",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "measurement": "ft",
+            "orderByTime": "ASC",
+            "policy": "autogen",
+            "query": "SELECT max(\"value\") FROM \"autogen\".\"ft\" WHERE (\"entity_id\"::tag = 'r1t_altitude')",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "entity_id::tag",
+                "operator": "=",
+                "value": "r1t_altitude"
+              }
+            ]
+          }
+        ],
+        "title": "Max Altitude",
+        "type": "stat"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 22
+        },
+        "id": 19,
+        "panels": [],
+        "title": "Battery & Charging",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "kwatth"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 4,
+          "x": 0,
+          "y": 23
+        },
+        "id": 16,
+        "options": {
+          "colorMode": "none",
+          "graphMode": "area",
+          "justifyMode": "center",
+          "orientation": "auto",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "value",
+          "wideLayout": true
+        },
+        "pluginVersion": "11.3.1",
+        "targets": [
+          {
+            "alias": "Battery Capacity",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "previous"
+                ],
+                "type": "fill"
+              }
+            ],
+            "measurement": "kWh",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "last"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "entity_id::tag",
+                "operator": "=",
+                "value": "r1t_battery_capacity"
+              }
+            ]
+          }
+        ],
+        "title": "Battery Capacity",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "dark-green",
+                  "value": null
+                },
+                {
+                  "color": "green",
+                  "value": 76
+                },
+                {
+                  "color": "blue",
+                  "value": 86
+                },
+                {
+                  "color": "dark-purple",
+                  "value": 95
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 4,
+          "x": 4,
+          "y": 23
+        },
+        "id": 21,
+        "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto"
+        },
+        "pluginVersion": "11.3.1",
+        "targets": [
+          {
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "measurement": "%",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "entity_id::tag",
+                "operator": "=",
+                "value": "r1t_battery_state_of_charge_limit"
+              }
+            ]
+          }
+        ],
+        "title": "Charging Limit",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": -1,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 58,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "stepAfter",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": 43200000,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Charging Speed (kWh)"
+              },
+              "properties": [
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "auto"
+                },
+                {
+                  "id": "unit",
+                  "value": "kwatth"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Charging Rate (mph)"
+              },
+              "properties": [
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "right"
+                },
+                {
+                  "id": "unit",
+                  "value": "velocitymph"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "SoC"
+              },
+              "properties": [
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "hidden"
+                },
+                {
+                  "id": "unit",
+                  "value": "percent"
+                },
+                {
+                  "id": "custom.lineStyle",
+                  "value": {
+                    "dash": [
+                      10,
+                      15
+                    ],
+                    "fill": "dash"
+                  }
+                },
+                {
+                  "id": "custom.fillOpacity",
+                  "value": 45
+                },
+                {
+                  "id": "custom.lineWidth",
+                  "value": 4
+                },
+                {
+                  "id": "custom.gradientMode",
+                  "value": "opacity"
+                },
+                {
+                  "id": "min",
+                  "value": 0
+                },
+                {
+                  "id": "max",
+                  "value": 100
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 12,
+          "x": 8,
+          "y": 23
+        },
+        "id": 17,
+        "options": {
+          "legend": {
+            "calcs": [
+              "max"
+            ],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.3.1",
+        "targets": [
+          {
+            "alias": "Charging Speed (kWh)",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "previous"
+                ],
+                "type": "fill"
+              }
+            ],
+            "measurement": "kW",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "entity_id::tag",
+                "operator": "=",
+                "value": "r1t_charging_speed"
+              }
+            ]
+          },
+          {
+            "alias": "Charging Rate (mph)",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+            },
+            "hide": false,
+            "query": "SELECT last(\"value\") FROM \"mph\" WHERE (\"entity_id\"::tag = 'r1t_charging_rate') AND $timeFilter GROUP BY time($__interval) fill(previous)",
+            "rawQuery": true,
+            "refId": "B",
+            "resultFormat": "time_series"
+          },
+          {
+            "alias": "SoC",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+            },
+            "hide": false,
+            "query": "SELECT mean(\"value\") FROM \"autogen\".\"%\" WHERE (\"entity_id\"::tag = 'r1t_battery_state_of_charge') AND $timeFilter GROUP BY time($__interval) fill(previous)",
+            "rawQuery": true,
+            "refId": "C",
+            "resultFormat": "time_series"
+          }
+        ],
+        "title": "Charging",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+        },
+        "description": "Tracks efficiency (miles per kWh) of drives. 0 or null values mean the vehicle didn't move in that time period where efficiency was calculated.",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 57,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": 3600000,
+              "lineInterpolation": "stepBefore",
+              "lineStyle": {
+                "fill": "solid"
+              },
+              "lineWidth": 2,
+              "pointSize": 10,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "always",
+              "spanNulls": true,
+              "stacking": {
+                "group": "A",
+                "mode": "normal"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "decimals": 2,
+            "mappings": [],
+            "max": 4,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "dark-red",
+                  "value": null
+                },
+                {
+                  "color": "dark-orange",
+                  "value": 1
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 1.5
+                },
+                {
+                  "color": "blue",
+                  "value": 2
+                },
+                {
+                  "color": "dark-green",
+                  "value": 2.5
+                }
+              ]
+            },
+            "unit": "mi/kWh"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 20,
+          "x": 0,
+          "y": 30
+        },
+        "id": 9,
+        "interval": "15m",
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": false
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.3.1",
+        "targets": [
+          {
+            "alias": "R1T Efficiency",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "previous"
+                ],
+                "type": "fill"
+              }
+            ],
+            "measurement": "mi/kWh",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT top(\"value\", 1) FROM \"mi/kWh\" WHERE (\"entity_id\"::tag = 'rivian_efficiency') AND $timeFilter GROUP BY time($__interval) fill(previous)",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [
+                    3
+                  ],
+                  "type": "top"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "entity_id::tag",
+                "operator": "=",
+                "value": "rivian_efficiency"
+              }
+            ]
+          }
+        ],
+        "title": "Efficiency History",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "default": true,
+          "type": "influxdb",
+          "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": true,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 20,
+          "x": 0,
+          "y": 37
+        },
+        "id": 8,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.3.1",
+        "targets": [
+          {
+            "alias": "range drop",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "measurement": "miles",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "entity_id::tag",
+                "operator": "=",
+                "value": "ev_vampire_drain_miles_lost"
+              }
+            ]
+          },
+          {
+            "alias": "energy drop",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": false,
+            "measurement": "kWh",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "refId": "B",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "entity_id::tag",
+                "operator": "=",
+                "value": "ev_vampire_drain_kwh_lost"
+              }
+            ]
+          }
+        ],
+        "title": "Vampire Drain (WIP)",
+        "type": "timeseries"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 44
+        },
+        "id": 20,
+        "panels": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "f059340e-cb00-44b7-8b2d-a7ad199afbd1"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "decimals": 2,
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                }
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 1
+            },
+            "id": 11,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "area",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "percentChangeColorMode": "standard",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showPercentChange": false,
+              "textMode": "auto",
+              "wideLayout": true
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+              {
+                "query": "SELECT last(\"value\"), first(\"value\")\nFROM \"mi\"\nWHERE (\"entity_id\" = 'r1t_odometer') AND $timeFilter",
+                "rawQuery": true,
+                "refId": "A",
+                "resultFormat": "time_series"
+              },
+              {
+                "datasource": {
+                  "name": "Expression",
+                  "type": "__expr__",
+                  "uid": "__expr__"
+                },
+                "expression": "($__to - $__from) / 86400000",
+                "hide": false,
+                "refId": "B",
+                "type": "math"
+              }
+            ],
+            "title": "Panel Title",
+            "type": "stat"
+          }
+        ],
+        "title": "WIP/Misc",
+        "type": "row"
+      }
+    ],
+    "preload": false,
+    "refresh": "",
+    "schemaVersion": 40,
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "browser",
+    "title": "Rivian R1T",
+    "uid": "adt5g01mja4g0f",
+    "version": 87,
+    "weekStart": ""
+  }
