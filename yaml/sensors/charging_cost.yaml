@@ -1,0 +1,40 @@
+## copy the contents to your configuration.yaml file
+## Be sure to update the sensor names to match your existing sensors.
+## Sensors to update:
+## - sensor.r1t_charging_cost
+## - sensor.r1t_charging_energy_delivered
+## - binary_sensor.r1t_charging_status
+## Update the number in line 23, '{{ (energy_delivered * 0.10) | round(2) }}' to match your local electricity cost per kWh.
+## The sensor name can be anything you'd like, just make sure to update the dashboard reference if you change it.
+
+## This sensor will check the value of the charging cost sensor provided by the Rivian integration. If that value is is 'unknown', it will assume you are charging at home and calculate the cost based on the energy delivered. If the charging cost is not 'unknown' it will use that value. If the charging cost is 'unknown' and the energy delivered is 0, it will return 0.
+
+template:
+  - sensor:
+        - name: "Corrected Charging Cost"
+          unit_of_measurement: "USD"
+          state: >
+            {% set raw_cost = states('sensor.r1t_charging_cost') %}
+            {% set energy_delivered = states('sensor.r1t_charging_energy_delivered') | float(0) %}
+            {% set charging = is_state('binary_sensor.r1t_charging_status', 'on') %}
+            {% if raw_cost not in ['unknown', 'unavailable', ''] %}
+              {{ raw_cost | float(0) }}
+            {% elif charging and energy_delivered > 0 %}
+              {{ (energy_delivered * 0.10) | round(2) }}
+            {% else %}
+              0
+            {% endif %}
+          attributes:
+            charging_location: >
+              {% set raw_cost = states('sensor.r1t_charging_cost') %}
+              {% if raw_cost not in ['unknown', 'unavailable', ''] %}
+                Public Charger
+              {% elif is_state('binary_sensor.r1t_charging_status', 'on') %}
+                Home Charger
+              {% else %}
+                Unknown
+              {% endif %}
+            energy_delivered: >
+              {{ states('sensor.r1t_charging_energy_delivered') }}
+            raw_charging_cost: >
+              {{ states('sensor.r1t_charging_cost') }}
