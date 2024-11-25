@@ -6,6 +6,8 @@ views:
     sections:
       - type: grid
         cards:
+          - type: heading
+            heading: General
           - type: gauge
             entity: sensor.r1t_odometer
             max: 30100
@@ -54,9 +56,14 @@ views:
             name: 12v Battery
             hide_state: false
             show_entity_picture: false
-        title: General
+          - type: iframe
+            url: >-
+              https://ha.spiffyvmlab.com/api/hassio_ingress/vAnd_PYZjaQvCcOCV3Wj2QZwZ8BodHYvbNntIzuMBhg/d-solo/adt5g01mja4g0f/rivian-r1t?from=1731949507878&to=1731971107878&timezone=browser&orgId=1&panelId=9&__feature.dashboardSceneSolo
+            aspect_ratio: 50%
       - type: grid
         cards:
+          - type: heading
+            heading: Status
           - type: picture-elements
             elements:
               - type: state-badge
@@ -181,9 +188,10 @@ views:
                   top: 77%
                   left: 92%
             image_entity: image.r1t_overhead_dark
-        title: Status
       - type: grid
         cards:
+          - type: heading
+            heading: Charging
           - type: gauge
             entity: sensor.r1t_battery_state_of_charge
             layout_options:
@@ -249,12 +257,25 @@ views:
           - type: tile
             entity: sensor.r1t_battery_state_of_charge_limit
             name: Charge Limit
+            visibility:
+              - condition: state
+                entity: switch.r1t_charging_enabled
+                state: 'on'
           - type: tile
             entity: sensor.r1t_charging_range_added
             name: Range Added
             visibility:
               - condition: state
                 entity: binary_sensor.r1t_charging_status
+                state: 'on'
+          - type: tile
+            entity: sensor.r1t_charging_energy_delivered
+            grid_options:
+              columns: 12
+              rows: 1
+            visibility:
+              - condition: state
+                entity: switch.r1t_charging_enabled
                 state: 'on'
           - graph: line
             type: sensor
@@ -282,13 +303,29 @@ views:
                 state: 'on'
             name: Charge Start Time
           - type: tile
-            entity: sensor.r1t_charging_cost
+            entity: sensor.corrected_charging_cost
             name: Charging Cost
             visibility:
               - condition: state
                 entity: binary_sensor.r1t_charging_status
                 state: 'on'
-        title: Charging
+          - type: entities
+            entities:
+              - entity: sensor.ev_vampire_drain_miles_lost
+              - entity: sensor.ev_vampire_drain_kwh_lost
+              - entity: sensor.ev_time_since_parked
+            title: Vampire Drain
+          - type: entities
+            entities:
+              - entity: sensor.ev_vampire_drain_since_last_charge
+                name: Vampire Drain (kWh)
+              - entity: sensor.ev_vampire_drain_percentage
+                name: Vampire Drain (%)
+            title: Vampire Drain Since Last Charge
+      - type: grid
+        cards: []
     icon: mdi:truck-off-road
     background:
       image: /api/image/serve/01b190d0f332eec77c41dae5109f5b45/original
+    visible:
+      - user: 2fe18f0caf1b44eb84fcc5a2109b42fc
