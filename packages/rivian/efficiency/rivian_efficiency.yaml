@@ -1,0 +1,64 @@
+# Package for tracking power efficiency of your Rivian
+# This is still a work in progress and may not be accurate
+# See README.md for more information
+
+# Input Numbers
+
+input_number:
+  last_r1t_odometer:
+    name: "Last Rivian Odometer"
+    initial: 0
+    min: 0
+    max: 100000  # Set a max value appropriate for your needs
+
+  last_r1t_state_of_charge:
+    name: "Last Rivian State of Charge"
+    initial: 0
+    min: 0
+    max: 100
+
+
+# Template Sensors
+
+template:
+  - sensor:
+      - name: "Rivian Efficiency"
+        unit_of_measurement: "mi/kWh"
+        state: >
+          {% set current_odometer = states('sensor.r1t_odometer') | float(0) %}
+          {% set previous_odometer = states('input_number.last_r1t_odometer') | float(0) %}
+          {% set odometer_delta = current_odometer - previous_odometer %}
+
+          {% set current_state_of_charge = states('sensor.r1t_battery_state_of_charge') | float(0) %}
+          {% set previous_state_of_charge = states('input_number.last_r1t_state_of_charge') | float(0) %}
+          {% set charge_delta = previous_state_of_charge - current_state_of_charge %}
+
+          {% set capacity_kwh = states('sensor.r1t_battery_capacity') | float(0) %}
+          {% set energy_used_kwh = (charge_delta / 100) * capacity_kwh %}
+
+          {% if odometer_delta > 0 and energy_used_kwh > 0 %}
+            {{ (odometer_delta / energy_used_kwh) | round(2) }}
+          {% else %}
+            0
+          {% endif %}
+
+# Automations
+
+automation:
+  - alias: "Update Last Rivian Odometer and State of Charge"
+    trigger:
+      - platform: state
+        entity_id: sensor.r1t_odometer
+      - platform: state
+        entity_id: sensor.r1t_battery_state_of_charge
+    action:
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.last_r1t_odometer
+        data:
+          value: "{{ states('sensor.r1t_odometer') | float(0) }}"
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.last_r1t_state_of_charge
+        data:
+          value: "{{ states('sensor.r1t_battery_state_of_charge') | float(0) }}"
