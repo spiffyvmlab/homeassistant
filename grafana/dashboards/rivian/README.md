@@ -15,3 +15,10 @@ First off, this was created on a system that's running InfluxDB adn Grafan as Ho
 Once you have the dashboard json copied to a new dashboard in Grafana, you'll need to check the queries, to ensure that the entity_id's match your Home Assistant setup. You'll also need to ensure that the InfluxDB database name is correct.
 
 The panel that calculates miles per day is currently setup to divide the change in Odometer value by the amount of time that has passed since June 27, 2024 (the day I took delivery of **my** Rivian). To update this, use an epoch time converter, like [epochconverter.com](https://epochconverter.com "Epoch Converter"), to find the epoch time of the day you took delivery of your Rivian, and update the query accordingly.
+
+## Screenshots
+
+![Rivian Dashboard Screenshot 1](images/Grafana-Rivian-Dashboard-1.jpg)
+<br>
+<br>
+![Rivian Dashboard Screenshot 2](images/Grafana-Rivian-Dashboard-2.jpg)
